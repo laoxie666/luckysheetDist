@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel='stylesheet' href='./dist/plugins/css/pluginsCss.css' />
+		<link rel='stylesheet' href='./dist/plugins/plugins.css' />
+		<link rel='stylesheet' href='./dist/css/luckysheet.css' />
+		<link rel='stylesheet' href='./dist/assets/iconfont/iconfont.css' />
+		<script src="./jquery.js"></script>
+		<script src="./dist/plugins/js/plugin.js"></script>
+		<script src="./dist/luckysheet.umd.js"></script>
+		<script src="./dist/luckyexcel.umd.js"></script>
+	</head>
+	<body>
+		<div id="download">下载文件</div>
+		<div id="luckysheet" style="width: 800px;height:600px;margin: 50px auto;">
+			
+		</div>
+		
+	</body>
+</html>
+<script type="text/javascript">
+	$(function() {
+			initExecl("./a1.xlsx","a1.xlsx");
+			$("#download").on("click",downloadFile);
+			
+			function initExecl(url,fileName) {
+				LuckyExcel.transformExcelToLuckyByUrl(url,fileName, function(exportJson, luckysheetfile){
+					
+					if(exportJson.sheets==null || exportJson.sheets.length==0) {
+						alert("Failed to read the content of the excel file, currently does not support xls files!");
+						return;
+					}
+					window.luckysheet.destroy();
+					
+					window.luckysheet.create({
+						container: 'luckysheet', //luckysheet is the container id
+						showinfobar:false,
+						lang: 'zh',
+						data:exportJson.sheets,
+						title:exportJson.info.name,
+						userInfo:exportJson.info.name.creator
+					});
+				});
+			}
+			
+			
+			function downloadFile() {
+				return luckysheet.getAllSheets();
+			}
+		
+		 
+				
+	})
+			
+</script>
